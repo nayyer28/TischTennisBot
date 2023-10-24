@@ -1,0 +1,19 @@
+services:
+  tt-db:
+    container_name: tt-db
+    image: postgres
+    restart: unless-stopped
+    environment:
+      POSTGRES_PASSWORD: password
+      POSTGRES_USER: tt-user
+    ports:
+      - "5330:5432"
+    volumes:
+      - postgres_data:/data/postgresql
+    networks:
+      - postgres
+volumes:
+  postgres_data:
+networks:
+  postgres:
+    driver: bridge

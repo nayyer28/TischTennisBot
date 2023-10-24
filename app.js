@@ -1,5 +1,6 @@
 const { App } = require("@slack/bolt");
 require("dotenv").config();
+const {Match , sequelize} = require('./model/matches')
 
 const app = new App({
   token: process.env.SLACK_BOT_TOKEN,
@@ -9,7 +10,14 @@ const app = new App({
 });
 
 
-const data = [];
+(async () => {
+  try {
+  await sequelize.authenticate();
+  console.log('Connection has been established successfully.');
+} catch (error) {
+  console.error('Unable to connect to the database:', error);
+}})();
+
 let match = {};
 
 (async () => {
