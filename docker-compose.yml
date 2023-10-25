@@ -1,3 +1,4 @@
+version: '3.8'
 services:
   tt-db:
     container_name: tt-db
@@ -9,11 +10,26 @@ services:
     ports:
       - "5330:5432"
     volumes:
-      - postgres_data:/data/postgresql
+      - postgres_data:/var/lib/postgresql/data
     networks:
-      - postgres
+      - tt
+
+  tt-app:
+    container_name: tt-app
+    build:
+      context: .
+      dockerfile: Dockerfile
+    restart: unless-stopped
+    ports:
+      - "3000:3000"
+    depends_on:
+      - tt-db
+    networks:
+      - tt
+
 volumes:
   postgres_data:
+
 networks:
-  postgres:
+  tt:
     driver: bridge
